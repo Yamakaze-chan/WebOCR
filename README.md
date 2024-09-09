@@ -3,7 +3,7 @@
 This is an extension that helps you translate from you webview
 
 # Preview
-Preview this extension here [Powerpoint](https://git.dev.solved.cz/tranquangnhat290402/WebOCR/src/branch/master/Tran%20Quang%20Nhat.pdf)
+Preview this extension here [Powerpoint](https://drive.google.com/file/d/13lAtVpY0Fzc_BHOnJboP6k3N_WD3JVRX/view?usp=sharing)
 
 ## INSTALLATION
 ### Step 1: Clone this repository with
