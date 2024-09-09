@@ -8,7 +8,7 @@ Preview this extension here [Powerpoint](https://git.dev.solved.cz/tranquangnhat
 ## INSTALLATION
 ### Step 1: Clone this repository with
 ```
-git clone https://git.dev.solved.cz/tranquangnhat290402/WebOCR.git
+git clone https://github.com/Yamakaze-chan/WebOCR.git
 ```
 
 ### Step 2: Change you current to directory to WebOCR folder
