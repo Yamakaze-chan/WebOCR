@@ -1,0 +1,5 @@
+deep_translator==1.11.4
+easyocr==1.7.1
+Flask==2.3.2
+manga_ocr==0.1.11
+Pillow==10.4.0
