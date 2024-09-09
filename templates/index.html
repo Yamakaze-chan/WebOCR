@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/split.js/1.6.0/split.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas-pro@1.5.8/dist/html2canvas-pro.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js"></script>
+    <!-- <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script> -->
+    <style>
+        .split {
+    display: flex;
+    flex-direction: row;
+}
+
+.gutter {
+    background-color: #eee;
+    background-repeat: no-repeat;
+    background-position: 50%;
+}
+
+.gutter.gutter-horizontal {
+    background-image: none;
+    cursor: col-resize;
+}
+    </style>
+</head>
+<body>
+    <div class="split">
+        <div id="split-0">
+                <!-- <img loading="eager" src="https://pbs.twimg.com/media/GU_bmaKaUAAQmFk?format=jpg&name=large" width="100%"> -->
+                <iframe id="main_content" width="100%" height="100%" src="https://terra-historicus.hypergryph.com/comic/6253/episode/9034"></iframe>
+
+        </div>
+        <div id="split-1">
+
+            <h1 id="capture">Hellooooo</h1>
+            <button id="btn">Capture</button>
+            <div>
+                <img id="abcd" width="100%" height = "100%"src="https://webusstatic.yo-star.com/ark_us_web/assets/172319083676614546/0d451f5b68cd433ca3a5371b42ffebc7.jpg?x-oss-process=image/resize,w_500">
+            </div>
+        </div>
+    </div>
+    <script>
+        Split(['#split-0', '#split-1'])
+    </script>
+    <script>
+        function capture() {
+    const captureElement = document.body // Select the element you want to capture. Select the <body> element to capture full page.
+    html2canvas(captureElement)
+        .then(canvas => {
+            canvas.style.display = 'block'
+            document.body.appendChild(canvas)
+            return canvas
+        })
+        .then(canvas => {
+            let image = canvas.toDataURL('image/png')
+            console.log(image)
+            image = image.substring(image.indexOf(',')+1)
+            // const a = document.createElement('a')
+            // a.setAttribute('download', 'my-image.png')
+            // a.setAttribute('href', image)
+            // a.click()
+            // canvas.remove()
+            $.ajax({
+                type : 'GET',
+                url : "/translate",
+                data: {"image":image},
+                success: function(data, textStatus, jqXHR){
+                    console.log(data);
+                    $("#abcd").attr("src","data:image/png;base64,"+data)
+                }
+                });
+        })
+}
+
+const btn = document.querySelector('#btn')
+btn.addEventListener('click', capture)
+    </script>
+</body>
+</html>
