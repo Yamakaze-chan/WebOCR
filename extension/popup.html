@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    * {
+	border: 0;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+:root {
+	--hue: 223;
+	--bg: hsl(var(--hue),10%,85%);
+	--fg: hsl(var(--hue),10%,5%);
+	--trans-dur: 0.3s;
+	font-size: calc(16px + (20 - 16) * (100vw - 320px) / (2560 - 320));
+}
+body,
+button {
+	font: 1em/1.5 Nunito, Helvetica, sans-serif;
+}
+body {
+	/* background-color: none; */
+  border: 1em;
+  border-radius: 1em;
+	color: var(--fg);
+  width: 300px;
+	display: grid;
+	place-items: center;
+	transition:
+		background-color var(--trans-dur),
+		color var(--trans-dur);
+}
+.modal {
+	background-color: hsl(var(--hue),10%,95%);
+	box-shadow: 0 0.75em 1em hsla(var(--hue),10%,5%,0.3);
+	color: hsl(var(--hue),10%,5%);
+	width: 100%;
+	max-width: 34.5em;
+	overflow: hidden;
+	position: relative;
+	transition:
+		background-color var(--trans-dur),
+		color var(--trans-dur);
+}
+.modal:before {
+	background-color: hsl(223,90%,60%);
+	border-radius: 50%;
+	content: "";
+	filter: blur(60px);
+	opacity: 0.15;
+	position: absolute;
+	top: -8em;
+	right: -15em;
+	width: 25em;
+	height: 25em;
+	z-index: 0;
+	transition: background-color var(--trans-dur);
+}
+.modal__actions {
+	animation-delay: 0.2s;
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+}
+.modal__body {
+  margin-top: 10px;
+	position: relative;
+	z-index: 1;
+	display: flex;
+	flex-direction: column;
+	padding: 0 2em 1.875em 1.875em;
+}
+.modal__button,
+.modal__close-button {
+	color: currentColor;
+	cursor: pointer;
+	-webkit-tap-highlight-color: transparent;
+}
+.modal__button {
+	background-color: hsla(var(--hue),10%,50%,0.2);
+	border-radius: 0.25rem;
+	font-size: 0.75em;
+	padding: 0.5rem 2rem;
+	transition:
+		background-color var(--trans-dur),
+		border-color var(--trans-dur),
+		opacity var(--trans-dur);
+	width: 100%;
+}
+.modal__button + .modal__button {
+	margin-top: 0.75em;
+}
+.modal__button:disabled {
+	opacity: 0.5;
+}
+.modal__button:focus,
+.modal__close-button:focus {
+	outline: transparent;
+}
+.modal__button:hover,
+.modal__button:focus-visible {
+	background-color: hsla(var(--hue),10%,60%,0.2);
+}
+.modal__button--upload {
+	background-color: transparent;
+	border: 0.125rem dashed hsla(var(--hue),10%,50%,0.4);
+	flex: 1;
+	padding: 0.375rem 2rem;
+}
+.modal__col + .modal__col {
+	flex: 1;
+	margin-top: 1.875em;
+}
+.modal__message{
+	color: hsl(var(--hue),10%,30%);
+  text-align: center;
+	transition: color var(--trans-dur);
+}
+.modal__content > * {
+	/* don’t use shorthand syntax, or actions delay will be overridden */
+	animation-name: fadeSlideIn;
+	animation-duration: 0.5s;
+	animation-timing-function: ease-in-out;
+	animation-fill-mode: forwards;
+	opacity: 0;
+}
+.modal__icon {
+	display: block;
+	margin: auto;
+	width: 2.25em;
+	height: 2.25em;
+}
+.modal__icon--blue g {
+	stroke: hsl(223,90%,50%);
+}
+.modal__icon circle,
+.modal__icon line,
+.modal__icon polyline {
+	animation: sdo 0.25s ease-in-out forwards;
+	transition: stroke var(--trans-dur);
+}
+.modal__icon :nth-child(2) {
+	animation-delay: 0.25s;
+}
+.modal__icon :nth-child(3) {
+	animation-delay: 0.5s;
+}
+.modal__icon-sdo10 {
+	stroke-dashoffset: 10;
+}
+.modal__icon-sdo14 {
+	stroke-dashoffset: 14.2;
+}
+.modal__icon-sdo69 {
+	stroke-dashoffset: 69.12;
+	transform: rotate(-90deg);
+	transform-origin: 12px 12px;
+}
+.modal__message {
+	animation-delay: 0.1s;
+	font-size: 1em;
+	margin-bottom: 1.5em;
+	min-height: 3em;
+}
+.modal__title {
+	font-size: 1.25em;
+	font-weight: 500;
+	line-height: 1.2;
+	margin-bottom: 1.5rem;
+	text-align: center;
+}
+/* state change */
+[data-state="2"]:before {
+	background-color: hsl(3,90%,60%);
+}
+[data-state="3"]:before {
+	background-color: hsl(138,90%,60%);
+}
+.modal__icon + .modal__icon,
+[data-state="1"] .modal__icon:first-child,
+[data-state="2"] .modal__icon:first-child,
+[data-state="3"] .modal__icon:first-child,
+.modal__content + .modal__content,
+[data-state="1"] .modal__content:first-child,
+[data-state="2"] .modal__content:first-child,
+[data-state="3"] .modal__content:first-child {
+	display: none;
+}
+[data-state="1"] .modal__icon:first-child,
+[data-state="2"] .modal__icon:nth-child(2),
+[data-state="3"] .modal__icon:nth-child(3),
+[data-state="1"] .modal__content:nth-child(2),
+[data-state="2"] .modal__content:nth-child(3),
+[data-state="3"] .modal__content:nth-child(4) {
+	display: block;
+}
+[data-ready="false"] .modal__content:first-child .modal__actions:nth-of-type(2),
+[data-ready="true"] .modal__content:first-child .modal__actions:first-of-type {
+	display: none;
+}
+[data-ready="true"] .modal__content:first-child .modal__actions:nth-of-type(2) {
+	display: flex;
+}
+
+/* Dark theme */
+@media (prefers-color-scheme: dark) {
+	:root {
+		--bg: hsl(var(--hue),10%,35%);
+		--fg: hsl(var(--hue),10%,95%);
+	}
+	.modal {
+		background-color: hsl(var(--hue),10%,10%);
+		color: hsl(var(--hue),10%,95%);
+	}
+	.modal__message {
+		color: hsl(var(--hue),10%,70%);
+	}
+	.modal__close-button:hover,
+	.modal__close-button:focus-visible {
+		color: hsl(var(--hue),10%,80%);
+	}
+	.modal__file-icon {
+		color: hsl(var(--hue),10%,60%);
+	}
+	.modal__icon--blue g {
+		stroke: hsl(223,90%,60%);
+	}
+}
+
+/* Animations */
+@keyframes fadeSlideIn {
+	from { opacity: 0; transform: translateY(33%); }
+	to { opacity: 1; transform: translateY(0); }
+}
+@keyframes sdo {
+	to { stroke-dashoffset: 0; }
+}
+  </style>
+</head>
+<body>
+  <div id="upload" class="modal" data-state="0" data-ready="false">
+    <div class="modal__body">
+      <div class="modal__col">
+        <!-- up -->
+        <svg class="modal__icon modal__icon--blue" viewBox="0 0 24 24" width="24px" height="24px" aria-hidden="true">
+          <g fill="none" stroke="hsl(223,90%,50%)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle class="modal__icon-sdo69" cx="12" cy="12" r="11" stroke-dasharray="69.12 69.12" />
+            <circle class="modal__icon-sdo14" cx="14" cy="9" r="4" stroke-dasharray="30 30" />
+            <!-- <polyline class="modal__icon-sdo14" points="7 12 12 7 17 12" stroke-dasharray="14.2 14.2" /> -->
+            <line class="modal__icon-sdo10" x1="10" y1="13" x2="7" y2="16" stroke-dasharray="10 10" />
+          </g>
+        </svg>
+      </div>
+      <div class="modal__col">
+        <div class="modal__content">
+          <h2 class="modal__title">Translate from Web</h2>
+          <p class="modal__message">Translate from your Web view</p>
+          <div class="modal__actions">
+            <button class="modal__button modal__button--upload" type="button" id="takeScreenshotBtn">Capture Webview</button>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<script src="jquery.js"></script>
+<script src="popup.js"></script>
+</html>
