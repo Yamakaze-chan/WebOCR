@@ -60,7 +60,7 @@ Step 5: Download EasyOCR Japanese model weight from [Jaded AI](https://www.jaide
 
 Step 6: Download MangaOCR model weight from [Huggingface](https://huggingface.co/kha-white/manga-ocr-base/tree/main) and put in `model` folder
 
-Step 7: Uncomment line 90 & 91, comment line 92 & 93
+Step 7: Uncomment line 90 & 91, comment line 92 & 93 of file `ocr.py`
 
 ## ADD EXTENSION TO YOUR BROWSER
 Step 1: Access `Manage Extensions` from your browser setting
