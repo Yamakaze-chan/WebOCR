@@ -17,18 +17,11 @@ cd WebOCR
 ```
 ### Step 3: Install requirements
 ### _1.With Docker_ ([Docker Installation](https://www.simplilearn.com/tutorials/docker-tutorial/how-to-install-docker-on-ubuntu))
-Step 3.1.1: Build Docker Image
+Step 3.1: Build Docker Image
 ```
 docker build -t <name_of_your_docker_image> .
 ```
-Step 3.1.2: Run with your Docker
-```
-docker run -p <port>:<port> -d <name_of_your_docker_image_of_step_3.1.1> 
-```
-for example I want to run at <port> `5000` and <name_of_your_docker_image> is `webocr1`
-```
-docker run -p 5000:5000 -d webocr1
-```
+
 for more information, please read [Docker Document](https://docs.docker.com/reference/)
 
 ### _2.With Miniconda_ ([Miniconda Installation](https://docs.anaconda.com/miniconda/))
@@ -61,6 +54,23 @@ Step 5: Download EasyOCR Japanese model weight from [Jaded AI](https://www.jaide
 Step 6: Download MangaOCR model weight from [Huggingface](https://huggingface.co/kha-white/manga-ocr-base/tree/main) and put in `model` folder
 
 Step 7: Uncomment line 90 & 91, comment line 92 & 93 of file `ocr.py`
+
+Step 8: Run your program
+
+_1._ Run with your Docker
+```
+docker run -p <port>:<port> -d <name_of_your_docker_image_of_step_3.1.1> 
+```
+for example I want to run at <port> `5000` and <name_of_your_docker_image> is `webocr1`
+```
+docker run -p 5000:5000 -d webocr1
+```
+
+_2._ Run with Anaconda
+```
+python web.py
+```
+
 
 ## ADD EXTENSION TO YOUR BROWSER
 Step 1: Access `Manage Extensions` from your browser setting
