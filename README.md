@@ -55,7 +55,7 @@ Step 6: Download MangaOCR model weight from [Huggingface](https://huggingface.co
 
 Step 7: Uncomment line 90 & 91, comment line 92 & 93 of file `ocr.py`
 
-Step 8: Run your program
+### Step 8: Run your program
 
 _1.Run with your Docker_
 ```
