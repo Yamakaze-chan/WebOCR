@@ -44,7 +44,7 @@ Step 3.2.3: Install required libraries
 pip install -r requirements.txt
 ```
 
-### *In case you want your model weight is locally* _(Skip to step 8 if you want your computer install model by itself)_
+### *In case you want your model weight is locally* _(Skip to step 8 if you want your computer install models by itself)_
 Step 4: Create `model` folder
 ```
 mkdir model
