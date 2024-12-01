@@ -7,7 +7,7 @@ from deep_translator import GoogleTranslator
 def get_wrapped_text(text: str, font: ImageFont.ImageFont,
                      line_length: int):
         lines = ['']
-        left, top, right, bottom = font.getbbox(text)
+        _, top, _, bottom = font.getbbox(text)
         for word in text.split():
             line = f'{lines[-1]} {word}'.strip()
             # print(font.getlength(line), line_length)
@@ -15,7 +15,12 @@ def get_wrapped_text(text: str, font: ImageFont.ImageFont,
                 lines[-1] = line
             else:
                 lines.append(word)
-        return '\n'.join(lines), len(lines)*(bottom - top)
+        max_text_w = 0
+        for line in lines:
+            left, _, right, _ = font.getbbox(line)
+            if right - left > max_text_w:
+                max_text_w = right - left
+        return '\n'.join(lines), max_text_w ,len(lines)*(bottom - top)
 
 #Checkoverlap and get the largest bbox
 def bb_intersection_over_union(boxA: list, boxB: list):
@@ -34,7 +39,8 @@ def get_bbox(img: Image, detect_text_model: easyocr):
     #detect and get bbox
     print(type(img))
     bboxes = detect_text_model.detect(img, bbox_min_score = 0.01)[0][0]
-
+    bboxes.sort(key=lambda x: x[2])
+    bboxes.sort(key=lambda x: x[0])
     # draw = ImageDraw.Draw(img)
 
     #combine bbox
@@ -75,8 +81,8 @@ def read_image(img: Image, detect_text_model: easyocr, read_text_model: MangaOcr
             size = 30
             font = ImageFont.truetype(r"arial.ttf", size)
             add_text = get_wrapped_text(translated_text, font, bbox[1]-bbox[0])
-            while((add_text[1] > bbox[3]-bbox[2]) and size >=10):
-                size = size - 5
+            while(((add_text[1] > bbox[1]-bbox[0]) or (add_text[2] > bbox[3]-bbox[2])) and size >=10):
+                size = size - 1
                 font = ImageFont.truetype(r"arial.ttf", size)
                 add_text = get_wrapped_text(translated_text, font, bbox[1]-bbox[0])
             
@@ -87,8 +93,8 @@ def read_image(img: Image, detect_text_model: easyocr, read_text_model: MangaOcr
     return img
 
 def init_model():
-    # e_ocr = easyocr.Reader(['ja'], gpu=False, download_enabled=False, model_storage_directory="model")
-    # m_ocr = MangaOcr(pretrained_model_name_or_path="model", force_cpu=False)
-    e_ocr = easyocr.Reader(['ja'])
-    m_ocr = MangaOcr()
+    m_ocr = MangaOcr(pretrained_model_name_or_path="model", force_cpu=False)
+    e_ocr = easyocr.Reader(['ja'], gpu=False, download_enabled=False, model_storage_directory="model")
+    # e_ocr = easyocr.Reader(['ja'])
+    # m_ocr = MangaOcr()
     return e_ocr, m_ocr
